@@ -39,7 +39,7 @@ function Header() {
 
   return (
     <div className="h-fit bg-gray-100 flex justify-center p-0">
-      <div className="w-full max-w-4xl relative">
+      <div className="w-full max-w-4xl z-50">
 
         <div className="flex items-center justify-between p-4 border-b bg-stone-200">
           {/* {border border-red-500} */}

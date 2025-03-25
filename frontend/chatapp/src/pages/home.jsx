@@ -3,7 +3,6 @@ import Iconbar from "../components/Iconbar";
 import Sidebar from "@/components/Sidebar";
 import ContentSec from "@/components/ContentSec";
 
-
 const HomePage = () => {
   return (
     <>

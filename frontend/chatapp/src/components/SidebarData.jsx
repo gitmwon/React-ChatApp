@@ -68,7 +68,7 @@ function SidebarData() {
               <div className="sec1 flex flex-col ml-3 border-b-2 border-b-stone-200 w-full h-full justify-center">
                 <div className="name text-left">{user.fullname}</div>
                 <div className="last-msg text-left">
-                  Hello shinil ?
+                  How are you ?
                 </div>
               </div>
             </button>

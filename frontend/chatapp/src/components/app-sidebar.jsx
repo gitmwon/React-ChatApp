@@ -21,7 +21,7 @@ function AppSidebar() {
           <SidebarHeader className="bg-stone-300">
             <HeaderContent />
           </SidebarHeader>
-          <SidebarContent className="bg-stone-300">
+          <SidebarContent className="bg-stone-300 gap-0 pt-2 pb-2">
             <SidebarGroup />
             <SidebarData />
             <SidebarGroup />

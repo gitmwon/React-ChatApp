@@ -36,6 +36,7 @@ function EditProfile() {
       try {
         console.log(file);
         setImagePreview(URL.createObjectURL(file));
+        // console.log(URL.createObjectURL(file));
         await updateProfile(file);
       } catch (error) {
         console.log(error);
