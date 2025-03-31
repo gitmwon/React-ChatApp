@@ -4,19 +4,24 @@ import { useState } from "react";
 import MessageContainer from "./MessageContainer";
 import profile from "../logo/profile.png";
 import { useMessagestore } from "@/store/useMessagestore";
-import { Settings,User, 
-  Send, 
-  Mic, 
-  Image as ImageIcon, 
-  MoreVertical, 
-  Phone, 
-  Video } from "lucide-react";
+import { useAuthstore } from "@/store/useAuthstore";
+import {
+  Settings,
+  User,
+  Send,
+  Mic,
+  Image as ImageIcon,
+  MoreVertical,
+  Phone,
+  Video,
+} from "lucide-react";
 
 function Header() {
   const [themeColor, setThemeColor] = useState("#4F46E5"); // Default indigo color
   const [showSettings, setShowSettings] = useState(false);
-  const messages = useMessagestore((state)=>state.messages);
-  const userData = useMessagestore((state)=> state.userData);
+  const messages = useMessagestore((state) => state.messages);
+  const userData = useMessagestore((state) => state.userData);
+  const onlineUsers = useAuthstore((state) => state.onlineUsers);
 
   const predefinedColors = [
     "#4F46E5", // Indigo
@@ -40,14 +45,13 @@ function Header() {
   return (
     <div className="h-fit bg-gray-100 flex justify-center p-0">
       <div className="w-full max-w-4xl z-50">
-
         <div className="flex items-center justify-between p-4 border-b bg-stone-200">
           {/* {border border-red-500} */}
           <div className="flex items-center space-x-3">
             <div className="relative">
               {selectedUser.avatar ? (
                 <img
-                  src={(userData.profilePic) ? userData.profilePic : profile}
+                  src={userData.profilePic ? userData.profilePic : profile}
                   alt="image"
                   className="w-10 h-10 rounded-full object-cover"
                 />
@@ -58,22 +62,29 @@ function Header() {
               )}
               {selectedUser.status && (
                 <div
-                  className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
-                    selectedUser.status === "online"
-                      ? "bg-green-500"
-                      : selectedUser.status === "away"
-                      ? "bg-yellow-500"
-                      : "bg-gray-500"
-                  }`}
+                  className={`absolute bottom-0 right-0 w-3 h-3 rounded-full 
+                    ${
+                      onlineUsers.includes(userData._id) == true
+                        ? "border-2 border-white bg-green-500"
+                        : ""
+                    }`}
                 />
               )}
             </div>
             <div>
               <h3 className="font-medium text-gray-900">{userData.fullname}</h3>
-              <p className="text-xs text-gray-500 capitalize">online</p>
-              {/* {selectedUser.status && (
-                
-               )} */}
+              <p
+                className={`text-xs text-gray-500 capitalize 
+              ${
+                onlineUsers.includes(userData._id) == true
+                  ? "text-green-500 font-sans italic"
+                  : "text-slate-500 font-sans italic"
+              }`}
+              >
+                {onlineUsers.includes(userData._id) == true
+                  ? "Online"
+                  : "Offline"}
+              </p>
             </div>
           </div>
           <div className="flex items-center space-x-3">

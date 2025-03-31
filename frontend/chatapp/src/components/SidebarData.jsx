@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useMessagestore } from "@/store/useMessagestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import profile from '../logo/profile.png';
+import { useAuthstore } from "@/store/useAuthstore";
 
 function SidebarData() {
   const { users, fetchingUsers, getSidebarUsers} = useMessagestore();
   const displayContact = useMessagestore((state) => state.displayContact);
   const [userData, setuserData] = useState([]);
+  const onlineUsers = useAuthstore((state)=> state.onlineUsers);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -18,6 +20,9 @@ function SidebarData() {
     };
     fetchUsers();
   }, []);
+
+  // const OnlineUsersAry = Object.values(onlineUsers);
+    console.log("OnlineUsers:",onlineUsers);
 
   if (fetchingUsers) {
     return (
@@ -68,7 +73,10 @@ function SidebarData() {
               <div className="sec1 flex flex-col ml-3 border-b-2 border-b-stone-200 w-full h-full justify-center">
                 <div className="name text-left">{user.fullname}</div>
                 <div className="last-msg text-left">
-                  How are you ?
+                  <div className={(onlineUsers.includes(user._id) == true)?"text-green-500 font-sans italic"
+                    :"text-slate-500 font-sans italic"}>
+                    {(onlineUsers.includes(user._id) == true)?"Online":"Offline"}
+                    </div>
                 </div>
               </div>
             </button>

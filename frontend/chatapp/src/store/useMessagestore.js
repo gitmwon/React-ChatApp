@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
+import { useAuthstore } from "./useAuthstore";
+import { Socket } from "socket.io-client";
 
 export const useMessagestore = create((set, get) => ({
   users: null,
@@ -28,6 +30,18 @@ export const useMessagestore = create((set, get) => ({
     } finally {
       set({ fetchingUsers: false });
     }
+  },
+
+  initializeSocketListener: () =>{
+    const socket = useAuthstore.getState().socket;
+    
+    socket.on("messages",(newMessage,userData)=>{
+      console.log("newmessage:",newMessage);
+      console.log("prev messages:",get().messages);
+      console.log("userData:",userData);
+      set((state) => ({ messages:[...state.messages,newMessage],userData}));
+      get().setimageOrientation();
+    })
   },
 
   setShowPreview: async (val) => {
@@ -110,7 +124,7 @@ export const useMessagestore = create((set, get) => ({
     try {
       get().messages.forEach((message) => {
         if (message.image) {
-            console.log(message.image);
+            // console.log(message.image);
           message.image.forEach((img, i) => {
             const imgElement = new Image();
             imgElement.src = img;

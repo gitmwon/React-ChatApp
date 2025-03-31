@@ -10,6 +10,7 @@ import {
 import HeaderContent from "./HeaderContent";
 import SidebarData from "./SidebarData";
 import EditProfile from "./editProfile";
+import SettingsPage from "../pages/settings";
 import { useAuthstore } from "@/store/useAuthstore";
 
 function AppSidebar() {
@@ -31,7 +32,7 @@ function AppSidebar() {
 
     if (currentSidebarcomp == "profile") return(<EditProfile />)
 
-    if (currentSidebarcomp == "settings") return("settings")  
+    if (currentSidebarcomp == "settings") return(<SettingsPage/>)  
       
       return (
         <>

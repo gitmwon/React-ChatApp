@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import {io} from "socket.io-client";
+import { useMessagestore } from "./useMessagestore";
 
 export const useAuthstore = create((set, get) => ({
   isAuth: {},
@@ -11,6 +12,7 @@ export const useAuthstore = create((set, get) => ({
   errormsg: null,
   currentSidebarcomp:"contacts",
   socket:null,
+  onlineUsers:[],
   setcomponent:(comp)=> set({currentSidebarcomp:comp}),
 
   checkAuth: async () => {
@@ -73,6 +75,7 @@ export const useAuthstore = create((set, get) => ({
 
   logoutUser: async (data) => {
     try {
+      console.log("logging out")
       if (data == true) {
         const res = await axiosInstance.post("/auth/logout");
         set({ isAuth: null });
@@ -89,10 +92,21 @@ export const useAuthstore = create((set, get) => ({
       if(get().isAuth && !socket){
         socket = io("http://localhost:8080", {
            withCredentials: true,
-           autoConnect: false, // Prevent auto connection
+           autoConnect: false,
+           query:{
+            userID : get().isAuth._id
+           }
         });
         socket.connect();
-        //console.log("working");
+
+        socket.on("connection",(data)=>{
+          set({socket})
+        })
+
+        socket.on("getOnlineUsers",(Onlinelist)=>{
+          set((state)=>({onlineUsers : Onlinelist}));
+        })
+
       }
     } catch (error) {
       console.log(error);
